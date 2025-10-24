@@ -1,0 +1,836 @@
+import 'package:flutter/material.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../domain/models/staff.dart';
+import 'staff_detail_page.dart';
+
+class HireStaffScreen extends StatefulWidget {
+  const HireStaffScreen({super.key});
+
+  @override
+  State<HireStaffScreen> createState() => _HireStaffScreenState();
+}
+
+class _HireStaffScreenState extends State<HireStaffScreen> {
+  String _selectedRole = 'All';
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  final List<String> _roles = ['All', 'Coach', 'Umpire', 'Groundskeeper'];
+
+  final List<Staff> _allStaff = [
+    // Coaches
+    Staff(
+      id: '1',
+      name: 'Mohammad Salahuddin',
+      role: 'Coach',
+      qualification: 'Level 3 ECB Coaching Certificate',
+      specialization: 'Batting Technique',
+      experience: 15,
+      rating: 4.9,
+      reviewCount: 78,
+      location: 'Dhaka, Bangladesh',
+      organization: 'Bangladesh Cricket Board',
+      about:
+          'Former first-class cricketer with 15 years of coaching experience. Specializes in batting technique and mental conditioning. Has coached multiple national youth teams and professional players.',
+      expertise: [
+        'Batting Technique',
+        'Mental Conditioning',
+        'Youth Development',
+        'Power Hitting',
+        'Shot Selection',
+      ],
+      languages: ['Bengali', 'English', 'Hindi'],
+      certifications: [
+        'Level 3 ECB Coaching Certificate',
+        'ICC Coaching Workshop',
+        'Sports Psychology Diploma',
+      ],
+      hourlyRate: 3000,
+      isAvailable: true,
+      nextAvailable: 'Tomorrow, 9:00 AM',
+      availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      matchesHandled: 250,
+      tournaments: ['BPL', 'DPL', 'NCL', 'U19 World Cup Preparation'],
+    ),
+    Staff(
+      id: '2',
+      name: 'Nazmul Islam',
+      role: 'Coach',
+      qualification: 'BCCI Level 2 Coach',
+      specialization: 'Spin Bowling',
+      experience: 12,
+      rating: 4.8,
+      reviewCount: 65,
+      location: 'Chittagong, Bangladesh',
+      organization: 'Chittagong Divisional Sports',
+      about:
+          'Former international spinner turned coach. Expertise in spin bowling techniques, variations, and match strategies. Known for developing young spinners.',
+      expertise: [
+        'Spin Bowling',
+        'Bowling Variations',
+        'Match Strategy',
+        'Wicket-taking Plans',
+        'Field Placements',
+      ],
+      languages: ['Bengali', 'English'],
+      certifications: [
+        'BCCI Level 2 Coach',
+        'Spin Bowling Masterclass',
+        'Tactical Analysis Course',
+      ],
+      hourlyRate: 2500,
+      isAvailable: true,
+      nextAvailable: 'Today, 4:00 PM',
+      availability: ['Mon', 'Wed', 'Fri', 'Sat', 'Sun'],
+      matchesHandled: 180,
+      tournaments: ['BPL', 'NCL', 'Premier League'],
+    ),
+    Staff(
+      id: '3',
+      name: 'Rajesh Kumar',
+      role: 'Coach',
+      qualification: 'CA Level 3 Coaching',
+      specialization: 'Fast Bowling',
+      experience: 10,
+      rating: 4.7,
+      reviewCount: 52,
+      location: 'Sylhet, Bangladesh',
+      organization: 'Sylhet Sports Academy',
+      about:
+          'Specialized in fast bowling mechanics and injury prevention. Works with pacers to increase speed while maintaining accuracy and fitness.',
+      expertise: [
+        'Fast Bowling',
+        'Pace Development',
+        'Injury Prevention',
+        'Fitness Training',
+        'Bowling Action',
+      ],
+      languages: ['Bengali', 'English', 'Hindi'],
+      certifications: [
+        'CA Level 3 Coaching',
+        'Biomechanics Certificate',
+        'Sports Medicine Basics',
+      ],
+      hourlyRate: 2800,
+      isAvailable: false,
+      nextAvailable: 'Nov 25, 2024',
+      availability: ['Tue', 'Thu', 'Sat', 'Sun'],
+      matchesHandled: 145,
+      tournaments: ['DPL', 'Sylhet Premier League', 'U23 Championship'],
+    ),
+
+    // Umpires
+    Staff(
+      id: '4',
+      name: 'Sharfuddoula Saikat',
+      role: 'Umpire',
+      qualification: 'ICC International Panel Umpire',
+      specialization: 'International Matches',
+      experience: 18,
+      rating: 4.9,
+      reviewCount: 92,
+      location: 'Dhaka, Bangladesh',
+      organization: 'BCB Umpires Panel',
+      about:
+          'ICC panel umpire with extensive international experience. Known for accuracy and calm demeanor. Has officiated in multiple ICC tournaments.',
+      expertise: [
+        'LBW Decisions',
+        'DRS Management',
+        'Match Management',
+        'Player Communication',
+        'Rules Expertise',
+      ],
+      languages: ['Bengali', 'English'],
+      certifications: [
+        'ICC Umpire Panel',
+        'Level 3 Umpire License',
+        'DRS Workshop',
+      ],
+      hourlyRate: 4000,
+      isAvailable: true,
+      nextAvailable: 'Tomorrow, 8:00 AM',
+      availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      matchesHandled: 420,
+      tournaments: ['Asia Cup', 'T20 World Cup', 'BPL', 'ODI Internationals'],
+    ),
+    Staff(
+      id: '5',
+      name: 'Mahfuzur Rahman',
+      role: 'Umpire',
+      qualification: 'BCB First Class Umpire',
+      specialization: 'Domestic Cricket',
+      experience: 12,
+      rating: 4.7,
+      reviewCount: 67,
+      location: 'Rajshahi, Bangladesh',
+      organization: 'Rajshahi Division Cricket',
+      about:
+          'Experienced domestic umpire with strong understanding of laws. Excellent at maintaining match tempo and handling pressure situations.',
+      expertise: [
+        'Law Knowledge',
+        'Signal Accuracy',
+        'Match Control',
+        'Fair Play',
+        'Communication',
+      ],
+      languages: ['Bengali', 'English'],
+      certifications: [
+        'BCB First Class License',
+        'Laws of Cricket',
+        'Umpire Development Program',
+      ],
+      hourlyRate: 2200,
+      isAvailable: true,
+      nextAvailable: 'Today, 2:00 PM',
+      availability: ['Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      matchesHandled: 280,
+      tournaments: ['NCL', 'DPL', 'Premier League'],
+    ),
+
+    // Groundskeepers
+    Staff(
+      id: '8',
+      name: 'Abdul Jabbar',
+      role: 'Groundskeeper',
+      qualification: 'IOG Level 3 Groundsman',
+      specialization: 'Pitch Preparation',
+      experience: 20,
+      rating: 4.9,
+      reviewCount: 56,
+      location: 'Mirpur, Dhaka',
+      organization: 'Sher-e-Bangla Stadium',
+      about:
+          'Master groundsman with 20 years of experience. Expert in preparing pitches for all formats. Has prepared pitches for international matches.',
+      expertise: [
+        'Pitch Preparation',
+        'Turf Management',
+        'Soil Analysis',
+        'Drainage Systems',
+        'Grass Maintenance',
+      ],
+      languages: ['Bengali', 'English'],
+      certifications: [
+        'IOG Level 3 Groundsman',
+        'Turf Management Course',
+        'Cricket Pitch Preparation',
+      ],
+      hourlyRate: 2000,
+      isAvailable: true,
+      nextAvailable: 'Tomorrow, 7:00 AM',
+      availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      matchesHandled: 380,
+      tournaments: ['International Series', 'BPL', 'Asia Cup', 'Test Matches'],
+    ),
+    Staff(
+      id: '9',
+      name: 'Kamal Hossain',
+      role: 'Groundskeeper',
+      qualification: 'BCB Ground Staff Certificate',
+      specialization: 'Ground Maintenance',
+      experience: 14,
+      rating: 4.7,
+      reviewCount: 42,
+      location: 'Khulna, Bangladesh',
+      organization: 'Khulna Divisional Stadium',
+      about:
+          'Experienced groundskeeper with expertise in overall ground maintenance. Ensures safe playing conditions and professional field setup.',
+      expertise: [
+        'Ground Maintenance',
+        'Outfield Care',
+        'Boundary Setup',
+        'Equipment Management',
+        'Safety Checks',
+      ],
+      languages: ['Bengali'],
+      certifications: ['BCB Ground Staff Certificate', 'Safety Management'],
+      hourlyRate: 1500,
+      isAvailable: true,
+      nextAvailable: 'Today, 8:00 AM',
+      availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      matchesHandled: 290,
+      tournaments: ['NCL', 'DPL', 'Local Championships'],
+    ),
+  ];
+
+  List<Staff> get _filteredStaff {
+    var filtered = _allStaff;
+
+    // Filter by role
+    if (_selectedRole != 'All') {
+      filtered = filtered
+          .where((staff) => staff.role == _selectedRole)
+          .toList();
+    }
+
+    // Filter by search query
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered.where((staff) {
+        return staff.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+            staff.specialization?.toLowerCase().contains(
+                  _searchQuery.toLowerCase(),
+                ) ==
+                true ||
+            staff.location.toLowerCase().contains(_searchQuery.toLowerCase());
+      }).toList();
+    }
+
+    return filtered;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        // Header
+        SliverToBoxAdapter(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.accentBlue, AppColors.primaryGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.work_outline,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hire Cricket Staff',
+                            style:
+                                const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ).copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'Find qualified professionals for your team',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.0),
+                // Search Bar
+                TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Search by name, specialization, or location...',
+                    hintStyle: const TextStyle(fontSize: 14),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: Icon(Icons.search, size: 24),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: Icon(Icons.clear, size: 24),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
+                            },
+                          )
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Role Filter Chips
+        SliverToBoxAdapter(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: const EdgeInsets.all(24.0).horizontal / 2,
+              vertical: 16.0,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: _roles.map((role) {
+                  final isSelected = _selectedRole == role;
+                  final count = role == 'All'
+                      ? _allStaff.length
+                      : _allStaff.where((s) => s.role == role).length;
+                  return Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: FilterChip(
+                      selected: isSelected,
+                      label: Text(
+                        '$role ($count)',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.textPrimary,
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                      onSelected: (selected) {
+                        setState(() {
+                          _selectedRole = role;
+                        });
+                      },
+                      backgroundColor: Colors.white,
+                      selectedColor: AppColors.accentBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(
+                          color: isSelected
+                              ? AppColors.accentBlue
+                              : Colors.grey.shade300,
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ),
+
+        // Info Banner
+        SliverToBoxAdapter(
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: const EdgeInsets.all(24.0).horizontal / 2,
+              vertical: 8.0,
+            ),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primaryGreen.withValues(alpha: 0.1),
+                  AppColors.accentBlue.withValues(alpha: 0.1),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.primaryGreen.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.primaryGreen,
+                  size: 24,
+                ),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: Text(
+                    '${_filteredStaff.length} qualified professionals available',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Staff List -  Grid
+        SliverPadding(
+          padding: EdgeInsets.symmetric(
+            horizontal: const EdgeInsets.all(24.0).horizontal / 2,
+          ),
+          sliver: SliverLayoutBuilder(
+            builder: (context, constraints) {
+              // Use Helper for grid columns
+              final crossAxisCount = 2;
+
+              // Use list for mobile, grid for larger screens
+              if (crossAxisCount == 1) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final staff = _filteredStaff[index];
+                    return _buildStaffCard(staff);
+                  }, childCount: _filteredStaff.length),
+                );
+              } else {
+                return SliverGrid(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final staff = _filteredStaff[index];
+                    return _buildStaffCard(staff);
+                  }, childCount: _filteredStaff.length),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: 16.0,
+                    crossAxisSpacing: 16.0,
+                    childAspectRatio: 0.85,
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+
+        const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
+      ],
+    );
+  }
+
+  Widget _buildStaffCard(Staff staff) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StaffDetailPage(staff: staff),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Profile Avatar
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          _getRoleColor(staff.role),
+                          _getRoleColor(staff.role).withValues(alpha: 0.6),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        staff.name.substring(0, 1).toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Staff Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                staff.name,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ).copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            if (staff.isAvailable)
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8 * 1.5,
+                                  vertical: 8 / 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.success.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: AppColors.success,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  'Available',
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 8 / 2),
+                        if (staff.qualification != null)
+                          Text(
+                            staff.qualification!,
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                        if (staff.specialization != null) ...[
+                          SizedBox(height: 8 / 2),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.stars,
+                                size: 14,
+                                color: AppColors.primaryOrange,
+                              ),
+                              SizedBox(width: 8 / 2),
+                              Expanded(
+                                child: Text(
+                                  staff.specialization!,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.primaryOrange,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: Colors.amber[700],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${staff.rating} (${staff.reviewCount} reviews)',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Icon(
+                              Icons.work_history,
+                              size: 16,
+                              color: AppColors.textSecondary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${staff.experience} yrs',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Organization & Location
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(color: Colors.grey.shade50),
+              child: Row(
+                children: [
+                  if (staff.organization != null) ...[
+                    Icon(
+                      Icons.business,
+                      size: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        staff.organization!,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                  Icon(
+                    Icons.location_on_outlined,
+                    size: 14,
+                    color: AppColors.textSecondary,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    staff.location,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Expertise Tags
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: staff.expertise.take(4).map((exp) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _getRoleColor(staff.role).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      exp,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: _getRoleColor(staff.role),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+
+            // Bottom Bar
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '৳${staff.hourlyRate.toStringAsFixed(0)}/hour',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryGreen,
+                        ),
+                      ),
+                      if (staff.nextAvailable != null)
+                        Text(
+                          'Next: ${staff.nextAvailable}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StaffDetailPage(staff: staff),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _getRoleColor(staff.role),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('View Profile'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _getRoleColor(String role) {
+    switch (role) {
+      case 'Coach':
+        return AppColors.primaryGreen;
+      case 'Umpire':
+        return AppColors.accentBlue;
+      case 'Groundskeeper':
+        return Colors.brown;
+      default:
+        return AppColors.textPrimary;
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+}
