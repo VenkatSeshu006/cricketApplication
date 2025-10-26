@@ -363,6 +363,7 @@ See [PROJECT_STATUS_REPORT.md](PROJECT_STATUS_REPORT.md) for comprehensive timel
 Comprehensive documentation is available in the `/docs` directory:
 
 ### Core Documentation
+- **[Roadmap.io Project](https://roadmap.sh/projects/ec2-instance)
 - **[Documentation Index](docs/README.md)** - Complete documentation navigation
 - **[API Specification](docs/api/api_spec.md)** - REST API endpoints (70+ endpoints)
 - **[API Quick Reference](docs/api/API_QUICK_REFERENCE.md)** - Quick API guide
