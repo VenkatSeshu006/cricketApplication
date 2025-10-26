@@ -1,4 +1,4 @@
-# 🏏 CricketApp[Link](https://github.com/VenkatSeshu006/cricketApplication) - Unified Cricket Ecosystem Platform
+# 🏏 [CricketApp](https://github.com/VenkatSeshu006/cricketApplication) - Unified Cricket Ecosystem Platform
 
 > **A comprehensive platform connecting players, coaches, ground owners, medical professionals, and cricket enthusiasts.**
 
